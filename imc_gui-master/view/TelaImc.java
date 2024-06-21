@@ -1,116 +1,179 @@
 package view;
+
 import model.Imc;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class TelaImc {
 
     private JPanel painelTitulo = new JPanel();
-    private JLabel labelTitulo = new JLabel("Índice de Massa Corporal - IMC");
-    private JLabel lblPeso = new JLabel("Peso:");
-    private JTextField txtPeso = new JTextField();
-    private JLabel lblTituloResultadoImc = new JLabel("Resultado do IMC:");
-    private JLabel lblResultadoImc = new JLabel("");
-    private JLabel lblStatusImc = new JLabel("Normal");
+    private JLabel labelTitulo = new JLabel("Indice de massa corporal - IMC");
+    private JLabel imcPeso = new JLabel("peso:");
+    private JTextField txtPeso = new JFormattedTextField();
+    private JLabel imcAltura = new JLabel("Altura:");
+    private JTextField txtAltura = new JFormattedTextField();
+    private JLabel imcTituloResultadoImc = new JLabel("Resultado do IMC");
+    private JLabel imcResultadoImc = new JLabel("25,00");
+    private JLabel imcStatusImc = new JLabel("Normal");
+    private JButton botaoCalcular = new JButton("Calcular");
+    private JButton botaoLimpar = new JButton("Limpar");
 
-    private JButton btnCalcular = new JButton();
-    private JButton btnLimpar = new JButton();
+    private String imagePacht = "../imagens/";
+   // private Icon iconBtnCalcular = new ImageIcon(getClass().getResource(imagePacht + "calc2.png"));
+    //private Icon iconBtnLimpar = new ImageIcon(getClass().getResource(imagePacht + "restart24.png"));
 
-    private JLabel lblALtura = new JLabel("Altura:");
-    private JTextField txtAltura = new JTextField();
+    //private Icon iconBtnCalcular = new ImageIcon(getClass().getResource(imagePacht + "calc2.png"));
+  //  private Icon iconBtnLimpar = new ImageIcon(getClass().getResource(imagePacht + "restart24.png"));
 
-    private String imagePath = "../images/";
-    private Icon iconCalcular = new ImageIcon(getClass().getResource(imagePath + "calc2.png"));
-    private Icon iconBtnLimpar = new ImageIcon(getClass().getResource(imagePath + "restart24.png"));
+    private Imc imc = new Imc();
 
-    Imc imc = new Imc();
+    int peso = 0;
+    double altura = 0.0;
 
-    public TelaImc(){criarTela();}
-
-    public void criarTela(){
-        JFrame tela = new JFrame();
-        tela.setSize(500,300);
-        tela.setTitle("Calculo de IMC");
-        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        tela.setLayout(null);
+    public TelaImc(){
+        CriarTela();
+    }
+    public void CriarTela(){
+        JFrame frame = new JFrame();
+        Random gerador = new Random();
 
 
-//        DEFINIR O PAINEL DE TITULO
+
+        frame.setTitle("Calculadora IMC");
+        frame.setSize(500,300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(null);
+
         painelTitulo.setBounds(0,0,500,50);
-        painelTitulo.setBackground(new Color(255, 175, 221));
-        labelTitulo.setBounds(10,10,500,30);
 
-        labelTitulo.setFont(new Font("Arial",Font.BOLD,24));
-        labelTitulo.setForeground(Color.BLACK);
+        frame.getContentPane().add(painelTitulo);
+        painelTitulo.setLayout(null);
+        labelTitulo.setBounds(10,10,200,30);
+        painelTitulo.add(labelTitulo);
+        frame.getContentPane().add(painelTitulo);
 
-//        COMPONENTES  TELA
-        lblPeso.setBounds(10,70,150,30);
+        imcPeso.setBounds(10,70,150, 30);
         txtPeso.setBounds(10,100,150,35);
-        txtPeso.setFont(new Font("Arial",Font.BOLD,24));
+        txtPeso.setFont(new Font("Arial", Font.BOLD, 24));
 
-        lblALtura.setBounds(10,140,150,30);
+        imcAltura.setBounds(10,140,150,30);
         txtAltura.setBounds(10,170,150,35);
-        txtAltura.setFont(new Font("Arial",Font.BOLD,24));
+        txtAltura.setFont(new Font("Arial", Font.BOLD, 24));
 
-        lblTituloResultadoImc.setBounds(225,70,250,30);
-        lblTituloResultadoImc.setForeground(Color.BLACK);
-        lblTituloResultadoImc.setFont(new Font("Arial",Font.BOLD,24));
-        lblTituloResultadoImc.setHorizontalAlignment(JLabel.CENTER);
+        imcTituloResultadoImc.setBounds(260,70,250,30);
+        imcTituloResultadoImc.setForeground(Color.blue);
+        imcTituloResultadoImc.setFont(new Font("Arial", Font.BOLD, 20));
+        imcTituloResultadoImc.setHorizontalAlignment(JLabel.CENTER);
 
-        lblResultadoImc.setBounds(225,110,250,30);
-        lblResultadoImc.setFont(new Font("Arial",Font.BOLD,38));
-        lblResultadoImc.setForeground(Color.BLACK);
-        lblResultadoImc.setHorizontalAlignment(JLabel.CENTER);
+        imcResultadoImc.setBounds(260,120,250,30);
+        imcResultadoImc.setFont(new Font("Arial", Font.BOLD, 30));
+        imcResultadoImc.setForeground(Color.red);
+        imcResultadoImc.setHorizontalAlignment(JLabel.CENTER);
 
-        lblStatusImc.setBounds(225,150,250,30);
-        lblStatusImc.setFont(new Font("Arial",Font.BOLD,24));
-        lblStatusImc.setForeground(Color.BLACK);
-        lblStatusImc.setHorizontalAlignment(JLabel.CENTER);
+        imcStatusImc.setBounds(260,150,250,30);
+        imcStatusImc.setFont(new Font("Arial", Font.BOLD, 20));
+        imcStatusImc.setHorizontalAlignment(JLabel.CENTER);
 
-        btnCalcular.setBounds(190,220,130,30);
-        btnCalcular.setIcon(iconCalcular);
-        btnCalcular.addActionListener(new ActionListener() {
+        botaoCalcular.setBounds(10, 220,120,30);
+        //botaoCalcular.setIcon(iconBtnCalcular);
+        botaoCalcular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calcularImc();
+                CalcularImc();
             }
         });
 
-        btnLimpar.setBounds(330,220,130,30);
-        btnLimpar.setIcon(iconBtnLimpar);
-        btnLimpar.addActionListener(new ActionListener() {
+        botaoLimpar.setBounds(110,220, 120,30);
+        //botaoLimpar.setIcon(iconBtnLimpar);
+        botaoLimpar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                limparTela();
+                LimparTela();
             }
         });
 
-        tela.getContentPane().add(labelTitulo);
-        tela.getContentPane().add(painelTitulo);
-        tela.getContentPane().add(lblPeso);
-        tela.getContentPane().add(txtPeso);
-        tela.getContentPane().add(lblALtura);
-        tela.getContentPane().add(txtAltura);
-        tela.getContentPane().add(lblTituloResultadoImc);
-        tela.getContentPane().add(lblResultadoImc);
-        tela.getContentPane().add(lblStatusImc);
-        tela.getContentPane().add(btnCalcular);
-        tela.getContentPane().add(btnLimpar);
+        frame.getContentPane().add(painelTitulo);
+        frame.getContentPane().add(imcPeso);
+        frame.getContentPane().add(txtPeso);
+        frame.getContentPane().add(imcAltura);
+        frame.getContentPane().add(txtAltura);
+        frame.getContentPane().add(imcTituloResultadoImc);
+        frame.getContentPane().add(imcResultadoImc);
+        frame.getContentPane().add(imcStatusImc);
+        frame.getContentPane().add(botaoCalcular);
+        frame.getContentPane().add(botaoLimpar);
 
-        tela.setVisible(true);
+        frame.setVisible(true);
+
+        while(true){
+            painelTitulo.setBackground(new Color(gerador.nextInt()));
+            try{
+                Thread.sleep(2000);
+            }catch (InterruptedException e){
+            }
+        }
     }
-    private void limparTela(){
-        txtAltura.setText("");
-        txtPeso.setText("");
-        lblStatusImc.setText("");
-        lblResultadoImc.setText("");
-        txtPeso.requestFocus();
+
+    private void LimparTela(){
+     txtAltura.setText("");
+     txtPeso.setText("");
+     imcStatusImc.setText("");
+     imcResultadoImc.setText("");
+     txtPeso.requestFocus();
     }
-    private void calcularImc(){
-        lblStatusImc.setText(imc.getStatus());
-        lblResultadoImc.setText(imc.get);
+    private void CalcularImc(){
+        if(validarDados()){
+
+            imc.setImc(peso);
+            imc.setAltura(altura);
+
+            if(imc.getImc() <= 18.5 || imc.getImc() <= 25.0){
+                imcResultadoImc.setForeground(Color.GREEN);
+            }else{
+                imcResultadoImc.setForeground(Color.RED);
+            }
+            imcStatusImc.setText(imc.getStatus());
+            String resultImc = String.valueOf(imc.getImc());
+//            imcResultadoImc.setText(
+//                    String.format("%,2f",resultImc.trim().replace(".",","))
+//            );
+            imcResultadoImc.setText(resultImc);
+
+        }else {
+        }
+    }
+    private boolean validarDados(){
+        try{
+            peso = Integer.parseInt(txtPeso.getText().trim());
+
+        }catch (NumberFormatException erro){
+            System.out.println(erro);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "O peso deve ser um valor numerico !!!!",
+                    "Valor invalido",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return false;
+        }
+        try{
+            altura = Double.parseDouble(txtAltura.getText().replace(",",".").trim());
+        }catch (NumberFormatException erro){
+            System.out.println(erro);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "O altura deve ser um valor numerico !!!!",
+                    "Valor invalido",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return false;
+        }
+        return true;
     }
 }
+
+

@@ -6,6 +6,7 @@ public class Imc {
     private double imc;
     private String status;
 
+
     public String getStatus() {
         if (getImc() <= 18.5) {
             this.status = "Abaixo do Peso";
